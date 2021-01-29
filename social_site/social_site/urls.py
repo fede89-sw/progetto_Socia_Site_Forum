@@ -22,11 +22,11 @@ from django.conf.urls.static import static
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('accounts/', include('accounts.urls')),
-    path('accounts/', include('django.contrib.auth.urls')), # x il sistema di password change/reset
+    path('accounts/', include('django.contrib.auth.urls')),
     path('', include('core.urls')),
     path('forum/', include('forum.urls')),
 
 ]
 
-if settings.DEBUG: # se DEBUG è settato su TRUE
+if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=MEDIA_ROOT)
