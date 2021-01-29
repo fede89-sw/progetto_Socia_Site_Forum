@@ -12,7 +12,7 @@
                 {% csrf_token %}
                 {{ form|crispy }}
                 <input type="submit" class="btn btn-info" value="LOGIN">
-                <input type="hidden" name="next" value="{{ next }}"> <!-- URL di reindirizzamento una volta effettuato il Login -->
+                <input type="hidden" name="next" value="{{ next }}">
             </form>
             <br>
             <p><a href="{% url 'password_reset' %}">Password Dimenticata?</a></p>
