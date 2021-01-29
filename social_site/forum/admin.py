@@ -4,9 +4,7 @@ from .models import Discussione, Post, Sezione
 # Register your models here.
 
 class DiscussioneModelAdmin(admin.ModelAdmin):
-    # modello per cui specifichiamo questa classe
     model = Discussione
-    # liste con contenuto che vogliamo mostrare per ogni singola discussione ( il nome delle liste sono parole chiave già definite in Django)
     list_display = ["titolo", "sezione_appartenenza", "autore_discussione"]
     search_fields = ["titolo", "autore_discussione"]
     list_filter = ["sezione_appartenenza", "data_creazione"]
