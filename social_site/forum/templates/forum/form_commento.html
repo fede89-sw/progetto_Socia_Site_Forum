@@ -1,0 +1,14 @@
+<!-- questo template viene incluso in 'singola_discussione.html' in quanto mostra la parte commenti relativa ad una discussione.
+    Per questo non mi serve estendere 'base.html',ne di block content, ma solo del form per rispondere -->
+{% load crispy_forms_tags %}
+
+<form class="mb-3" action="{% url 'rispondi_a_discussione' pk=discussione.pk %}" method="POST">
+    {% csrf_token %}
+    {{ form_commento|crispy }} <!-- passato dalla view 'visualizza_discussione' -->
+    <input type="submit" class="btn btn-info" value="RISPONDI">
+</form>
+
+<!--action="{% url 'rispondi_a_discussione' pk=discussione.pk %}" -> chiamo la view dei commenti 'aggiungi_risposta' che ho impostato
+    a: path('discussione/<int:pk>/rispondi/', views.aggiungi_risposta, name="rispondi_a_discussione"). Devo quindi passare anche pk della
+    discussione in cui mi trovo, passato alla pagina 'singola_discussione.html' tramite la view 'visualizza_discussione'.
+    RICORDO che il contenuto di qst pagina verrà visualizzato all'interno della pagina 'singola_discussione.html' tramite 'include' -->

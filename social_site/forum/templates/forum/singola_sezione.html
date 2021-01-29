@@ -1,0 +1,55 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ block.super }} - {{ sezione.nome_sezione }}{% endblock title %}
+
+{% block content %}
+
+    <div class="card my-3">
+        <div class="card-header d-flex align-items-end">
+            <div>
+                <h3>{{ sezione.nome_sezione }}</h3>
+                <h6 class="card-text">{{ sezione.descrizione }}</h6>
+            </div>
+            <p class="ml-auto"><a class="btn btn-outline-info" href="{% url 'crea_discussione' pk=sezione.pk %}">Crea Discussione</a></p>
+        </div>
+        <div class="card-body pb-0">
+            <table class="table mt-3">
+                <thead>
+                    <tr class="row">
+                        <th class="col-lg-6 col-4">Titolo</th>
+                        <th class="col-lg-2 col-3">Autore</th>
+                        <th class="col-lg-2 col-2">Posts</th>
+                        <th class="col-lg-2 col-3">Ultimo Post</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr class="row">
+                        {% for discussione in discussioni %}
+                            <td class="col-lg-6 col-4">
+                                <a href="{{ discussione.get_absolute_url }}">{{ discussione.titolo }}</a>
+                            </td>
+                            <td class="col-lg-2 col-3">
+                                <a href="{% url 'user_profile' username=discussione.autore_discussione.username %}">{{ discussione.autore_discussione }}</a>
+                            </td>
+                            <td class="col-lg-2 col-2">
+                                {{ discussione.post_set.count }} <!-- relazione inversa tramite _set -->
+                            </td>
+                            <td class="col-lg-2 col-3">
+                                {{ discussione.post_set.last.data_creazione|timesince }} <!-- relazione inversa tramite _set; .last prendo l'ultimo post -->
+                            </td>
+                        {% empty %}
+                            <p>Non ci sono ancora Discussioni!</p>
+                        {% endfor %}
+                    </tr>
+                </tbody>
+            </table>
+            
+
+
+        </div>
+    </div>
+
+
+
+
+{% endblock content %}

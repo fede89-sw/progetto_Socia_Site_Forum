@@ -1,0 +1,84 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ block.super }} - {{ discussione.titolo }}{% endblock title %}
+
+{% block content %}
+
+<!-- <h1>{{ discussione.titolo }}</h1>
+<h2>{{ discussione.data_creazione }}</h2>
+<h3>in: {{ discussione.sezione_appartenenza }}</h3> -->
+
+    {% for post in posts_discussione %}
+
+        <div class="card my-3">
+            
+            <!-- Condizione per mettere un elemento e il titolo della discussione solo al primo ciclo del for -->
+            {% if forloop.first and not "pagina" in request.get_full_path %}  
+            <div class="card-header pb-0">
+                <h3>{{ discussione.titolo }}</h3>
+                <p class="text-muted">{{ discussione.data_creazione|date:"D d M Y" }}
+                <br>in: {{ discussione.sezione_appartenenza }}</p>
+            </div>
+            {% else %}
+                <div class="card-header py-0">
+                    <span class="text-muted mb-0">{{ post.data_creazione|date:"d M Y" }}</span>
+                    {% if request.user == post.autore_post %}
+                        <!-- <i class="far fa-trash-alt"></i>  => https://fontawesome.com/ -->
+                        <a href="{% url 'cancella_post' id=discussione.pk pk=post.pk %}">- <i class="far fa-trash-alt"></i></a>
+                    {% endif %}
+                </div>
+            {% endif %}
+
+        
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-xl-2 col-4"> <!-- con schermo xl divisone 2/10, se no 4/8 -->
+                        <p class="mb-0"><a href="{% url 'user_profile' username=post.autore_post.username %}"><strong>{{ post.autore_post }}</strong></a></p> <!-- andava anche cosi -> {% url 'user_profile' username=post.autore_post %}-->
+                        <p class="text-muted mb-0">Utente da: {{ post.autore_post.date_joined|date:"M Y" }}</p> <!-- .date_joined è un parametro preimpostato nella classe 'User' -->
+                        <p class=" text-muted">Posts: {{ post.autore_post.posts.count }}</p> <!-- nel Modello Post: autore_post = models.ForeignKey(User, on_delete=models.CASCADE, related_name="posts") -->
+                    </div>
+                    <div class="col-xl-10 col-8">
+                        <p class="my-0">{{ post.contenuto|linebreaks }}</p> <!-- quando vai a capo scrivendo un post, va effettivamente a capo quando lo invii, se no era tutto su stessa linea -->
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+    {% endfor %}
+
+    <!-- PAGINAZIONE -->
+    <!-- ricevo 'posts_discussione' a questa pagina dalla view 'visualizza_discussione'. Anche 'pagina' la definisco io qui e sarà un nome
+        chiave anche nella view -->
+    <nav aria-label="Pagination">
+        <ul class="pagination justify-content-end">
+        {% if posts_discussione.has_previous %}
+            <li class="page-item"><a class="page-link" href="?pagina=1">&laquo;</a></li>
+            <li class="page-item"></li><a class="page-link" href="?pagina={{ posts_discussione.previous_page_number }}">&lsaquo;</a></li>
+        {% endif %}
+        {% if posts_discussione.paginator.num_pages > 1 %}
+            {% for i in posts_discussione.paginator.page_range %} <!-- ciclo per il numero totale di pagine -->
+                {% if posts_discussione.number == i %} <!-- se la pagina corrente è la pagina numero 'i' -->
+                    <li class="page-item active"><span class="page-link">{{ i }} <span class="sr-only">(current)</span></span></li> <!-- creo il relativo bottone,lo evidenzio e disabilito-->
+                {% else %}                    <!-- altrimenti -->
+                    <li class="page-item"><a class="page-link" href="?pagina={{ i }}">{{ i }}</a></li> <!-- creo bottone delle altre pagine,non evidenziate e selezionabili -->
+                {% endif %}
+            {% endfor %}
+        {% endif %}
+        {% if posts_discussione.has_next %}
+            <li class="page-item"><a class="page-link" href="?pagina={{ posts_discussione.next_page_number }}">&rsaquo;</a></li>
+            <li class="page-item"><a class="page-link" href="?pagina={{ posts_discussione.paginator.num_pages }}">&raquo;</a></li>
+        {% endif %}
+        </ul>
+      </nav>
+
+    <!-- con 'include' importo un pezzo di codice ( Snippet ) html da altri template, in qst caso  direttamente dentro altri template html -->
+    {% if request.user.is_authenticated %}
+        {% include 'forum/form_commento.html' %} 
+    {% else %}
+        <div class="alert alert-info" role="alert">
+            Devi effettuare il <a href="{% url 'login' %}?next={{ request.get_full_path }}" class="alert-link">Login</a> per commentare!
+        </div>
+    {% endif %}
+
+{% endblock content %}

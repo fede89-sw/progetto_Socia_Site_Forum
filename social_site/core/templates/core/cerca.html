@@ -1,0 +1,48 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ block.super }} - Cerca nel Forum{% endblock title %}
+
+{% block content %}
+    <h1 class="mt-3">Risultati della Ricerca</h1>
+    <hr class="mb-4">
+    <div class="row">
+        <div class="col-4">
+            <h5><strong>Posts</strong></h5>
+            <hr class="mt-0">
+            {% if posts %}
+                {% for post in posts %}
+                    <p>{{ post.contenuto|truncatewords:10 }}</p>
+                    <p class="mb-0">by <a href="{% url 'user_profile' username=post.autore_post %}"><strong>@{{ post.autore_post }}</strong></a></p>
+                    <p>in <a href="{{ post.discussione.get_absolute_url }}">{{ post.discussione }}</a></p>
+                    {% if not forloop.last %}
+                        <hr>
+                    {% endif %}
+                {% endfor %}
+            {% else %}
+                <p>---</p>
+            {% endif %}
+        </div>
+        <div class="col-4">
+            <h5><strong>Discussioni</strong></h5>
+            <hr class="mt-0">
+            {% if discussioni %}
+                {% for discussione in discussioni %}
+                    <p><a href="{{ discussione.get_absolute_url }}">{{ discussione.titolo }}</a></p>
+                {% endfor %}
+            {% else %}
+                <p>---</p>
+            {% endif %}
+        </div>
+        <div class="col-4">
+            <h5><strong>Utenti</strong></h5>
+            <hr class="mt-0">
+            {% if users %}
+                {% for user in users %}
+                    <p><a href="{% url 'user_profile' username=user.username %}"><strong>@{{ user.username }}</strong></a></p>
+                {% endfor %}
+            {% else %}
+                <p>---</p>
+            {% endif %}
+        </div>
+    </div>
+{% endblock content %}
