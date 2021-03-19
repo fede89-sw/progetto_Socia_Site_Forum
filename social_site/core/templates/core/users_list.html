@@ -7,11 +7,6 @@
     <h2 class="mt-3">Lista Utenti</h2>
     <hr>
 
-    <!-- Voglio fare il modo di visulizzare 3 utenti per riga. Faccio questo con div rows e col. Al primo giro del ciclo apro un div righa,
-        e metto gli utenti con div colonna. Con il primo IF controllo se il contatore è divisibile per 3, quindi che ne sia multiplo..
-        se è cosi, oppure siamo all'ultimo giro del ciclo chiudo il div righa; se il contatore è divisibile per 3 ma non siamo all'ultima righa 
-        apro poi un altro div righa. -->
-
     {% for utente in object_list %}
 
         {% if forloop.first %}<div class="row">{% endif %}
@@ -25,8 +20,8 @@
                         </p>
 
                         Iscrizione: {{ utente.date_joined|date:"M Y" }}<br>
-                        Post: {{ utente.posts.count }}<br> <!-- relazione inversa in Post -->
-                        Discussioni: {{ utente.discussioni.count }} <!-- relazione inversa in Discussione -->
+                        Post: {{ utente.posts.count }}<br>
+                        Discussioni: {{ utente.discussioni.count }}
                     </div>
                 </div>
             </div>
