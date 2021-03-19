@@ -20,16 +20,13 @@
             <div class="card-body">
                 <div class="row">
                     <div class="col-lg-3">
-                        <!-- qui nel campo 'src' devi aggiungere .url per avere il percorso completo (/media/adv_tuck_planche.jpg) se no non andrebbe, 
-                        perchè 'sezione.logo_sezione' contiene il nome del file (adv_tuck_planche.jpg). -->
                         <img src="{{ sezione.logo_sezione.url }}" style="max-width: 100%;" alt="logo della sezione">
-                        <!-- grazie all'attributo style="max-width: 100%;" le imgs vengono ridimensionate della max width del genitore, ovvero il div class=col-lg3  -->
                         <p class="mb-0 mt-3 text-center">Discussioni Totali: {{ sezione.discussione_set.count }}</p>
                         <p class="mb-0 mt-1 text-center">Messaggi Totali: {{ sezione.get_number_of_posts_in_section }}</p>
                     </div>
                     <div class="col-lg-9">
                         <p>Ultime Discussioni:</p>
-                        <table class="table table-hover"> <!-- table-hover fa evidenziare la riga selezionata col mouse quando ci passi sopra -->
+                        <table class="table table-hover">
                             <tbody>
                                 {% for discussione in sezione.get_last_discussions %}
                                     <tr class="row">
