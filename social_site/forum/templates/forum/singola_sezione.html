@@ -32,10 +32,10 @@
                                 <a href="{% url 'user_profile' username=discussione.autore_discussione.username %}">{{ discussione.autore_discussione }}</a>
                             </td>
                             <td class="col-lg-2 col-2">
-                                {{ discussione.post_set.count }} <!-- relazione inversa tramite _set -->
+                                {{ discussione.post_set.count }}
                             </td>
                             <td class="col-lg-2 col-3">
-                                {{ discussione.post_set.last.data_creazione|timesince }} <!-- relazione inversa tramite _set; .last prendo l'ultimo post -->
+                                {{ discussione.post_set.last.data_creazione|timesince }}
                             </td>
                         {% empty %}
                             <p>Non ci sono ancora Discussioni!</p>
